@@ -24,9 +24,9 @@
 <style>
 .nav
 tr td {
-font-size:20px;
+font-size:17px;
 padding: 3px;
-color:#2d2d2d;
+color:#323d3d;
 font-family: 'Montserrat', sans-serif; ;
 }
 .nav input[type="text"],input[type="date"]{
@@ -34,19 +34,19 @@ font-family: 'Montserrat', sans-serif; ;
 	border-style: block;
 	border-color: #aeaeae;
 	border-width: 0.5px;
-	border-radius: 5px;
+	border-radius: 3px;
 	font-size: 17px;
 	padding: 5px;
 	color:  #4fc04d;
   font-family: 'Montserrat', sans-serif; ;
 }
 .nav select {
-	width:100%;
+	width:400px;
 	border-bottom-color: #aeaeae;
 	border-width: 0.5px;
 	border-radius: 5px;
 	font-size: 17px;
-	padding: 7px;
+	padding: 10px;
 	color:  #4fc04d;
   font-family: 'Montserrat', sans-serif; 
 }
@@ -54,9 +54,9 @@ font-family: 'Montserrat', sans-serif; ;
 	width:40%;
 	border-style: none;
 	border-color: none;
-	border-radius: 4px;
+	border-radius: 3px;
 	font-size: 17px;
-	padding: 5px;
+	padding: 7px;
 }
 .nav input[type="submit"]:hover {
     background-color: #4fc04d;
@@ -74,7 +74,7 @@ font-family: 'Montserrat', sans-serif; ;
         <a class="navbar-brand brand-logo-mini" href="index.html"><img src="/static/images/logo_mini.svg" alt="logo"></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center">
-        <p class="page-name d-none d-lg-block">Crime Prediction Using Neural Networks</p>
+        <p class="page-name d-none d-lg-block" style="font-family: Montserrat;font-size: 23px;color:#678dce">Crime Prediction Using Neural Networks</p>
         <ul class="navbar-nav ml-lg-auto">
         </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center ml-auto" type="button" data-toggle="offcanvas">
@@ -117,11 +117,12 @@ font-family: 'Montserrat', sans-serif; ;
             <div class="col-lg-12 grid-margin">
               <div class="card overflow-hidden dashboard-curved-chart">
                 <div class="card-body mx-1">
-                  <h2 class="card-title border-bottom-1">Enter the details here</h2>
+                  <h2 class="card-title border-bottom-1" style="font-family: Montserrat">Enter the details here</h2>
                     <div id="chartLegend"></div>
                       <ul class="nav">
                       	<form align="left" method="POST" action="{{url_for('predict')}}">
-                      		<table>
+                      		<center>
+                          <table>
                       		<tr>
                       	<!-- 	<td>
                       		Select Year :
@@ -189,6 +190,7 @@ font-family: 'Montserrat', sans-serif; ;
                       		<br><input type="submit" value="Predict">
                       		</td>
                       		</table>
+                          </center>
                       	</form>
                       </ul>
                   </div>
@@ -200,7 +202,7 @@ font-family: 'Montserrat', sans-serif; ;
             <div class="col-lg-12 grid-margin">
               <div class="card performance-cards">
                 <div class="card-body">
-                	<h2 class="card-title">Map</h2>
+                	<h2 class="card-title" style="font-family: Montserrat">Map</h2>
                   <div class="row">
 
                     <div id="googleMap" style="width:100%;height:400px;"></div>

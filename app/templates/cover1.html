@@ -4,7 +4,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Analysis: Crime Prediction</title>
+  <title>Dashboard: Crime Prediction</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="node_modules/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="node_modules/simple-line-icons/css/simple-line-icons.css">
@@ -26,7 +26,7 @@
 tr td {
 font-size:20px;
 padding: 3px;
-color: 323d3d;
+color:#323d3d;
 font-family: 'Montserrat', sans-serif; ;
 }
 .nav input[type="text"],input[type="date"]{
@@ -34,27 +34,29 @@ font-family: 'Montserrat', sans-serif; ;
 	border-style: block;
 	border-color: #aeaeae;
 	border-width: 0.5px;
-	border-radius: 5px;
+	border-radius: 3px;
 	font-size: 17px;
 	padding: 5px;
-	color:  #6569df;
+	color:  #4fc04d;
+  font-family: 'Montserrat', sans-serif; ;
 }
 .nav select {
-	width:100%;
+	width:300px;
 	border-bottom-color: #aeaeae;
 	border-width: 0.5px;
-	border-radius: 5px;
+	border-radius: 3px;
 	font-size: 17px;
-	padding: 7px;
-	color:  #6569df;
+	padding: 10px;
+	color:  #4fc04d;
+  font-family: 'Montserrat', sans-serif; 
 }
 .nav input[type="submit"]{
-	width:40%;
+	width:50%;
 	border-style: none;
 	border-color: none;
-	border-radius: 4px;
-	font-size: 17px;
-	padding: 5px;
+	border-radius: 3px;
+	font-size: 20px;
+	padding: 7px;
 }
 .nav input[type="submit"]:hover {
     background-color: #4fc04d;
@@ -72,7 +74,7 @@ font-family: 'Montserrat', sans-serif; ;
         <a class="navbar-brand brand-logo-mini" href="index.html"><img src="/static/images/logo_mini.svg" alt="logo"></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center">
-        <p class="page-name d-none d-lg-block" style="font-family: Montserrat;font-size: 23px;color:#678dce">Crime Prediction Using Neural Networks</p>
+        <p class="page-name d-none d-lg-block">Crime Prediction Using Neural Networks</p>
         <ul class="navbar-nav ml-lg-auto">
         </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center ml-auto" type="button" data-toggle="offcanvas">
@@ -115,20 +117,116 @@ font-family: 'Montserrat', sans-serif; ;
             <div class="col-lg-12 grid-margin">
               <div class="card overflow-hidden dashboard-curved-chart">
                 <div class="card-body mx-1">
-                  <h2 class="card-title border-bottom-1" style="font-family: Montserrat">Analysis</h2>
+                  <h2 class="card-title border-bottom-1">Enter the details here</h2>
                     <div id="chartLegend"></div>
-                    <div >
-                     <img src="/static/images/bargraph.PNG">
-                            </div><div>
-                     <img src="/static/images/analysis2.PNG">
-                          </div>
+                      <ul class="nav">
+                      	<form align="left" method="POST" action="{{url_for('predict')}}">
+                      		
+                          <table>
+                      		<tr>
+                      	<!-- 	<td>
+                      		Select Year :
+                      		</td>
+                      		<td>
+                      		<select id='year'>
+                      			<option>none</option>
+                      			<option>2015</option>
+                      		</select>
+                      		</td> -->
 
+                      		<tr>
+                      		<td>
+                      		Select Category :
+                      		</td>
+                      		<td>
+                      		<select id="category" name="category">
+                            <option selected disabled>Choose here</option>
+                            <option>Assault</option>
+                      			<option>Fraud</option>
+                            <option>Family Offenses</option>
+                            <option>Other Offenses</option>
+                      		</select>
+                      		</td>
+
+                      		<tr>
+                      		<td>
+                      		Select Day :
+                      		</td>
+                      		<td>
+                      		  <select id="day" name="day">
+                            <option selected disabled>Choose here</option>
+       {% for i in range(0,6) %}
+        <option value="{{day[i]}}" name="{{day[i]}}">{{day[i]}}</option>
+       {% endfor %}
+                      		</td>
+
+                      		<tr>
+                      		<td>
+                      		Enter District :
+                      		</td>
+                      		<td>
+                            <select id="dist" name="dist">
+                            <option selected disabled>Choose here</option>
+       {% for i in range(0,9) %}
+        <option value="{{district[i]}}" name="{{district[i]}}">{{district[i]}}</option>
+       {% endfor %}
+                     <!--  		<input type="text" id="dist" name="dist"> -->
+                      		</td>
+                      		<tr>
+                      		<!-- <td>
+                      		Enter X value:</td>
+                      		<td>
+                      		<input type="text" id="lat" name="lat">
+                      		</td>
+                      		<tr>
+                      		<td>
+                      		Enter Y value :
+                      		</td>
+                      		<td>
+                      		<input type="text" id="longi" name="longi">
+                      		</td> -->
+                      		<tr>
+                      		<td colspan="2" align="center">
+                      		<br><input type="submit" value="Predict">
+                      		</td>
+                      		</table>
+                      	</form>
+                      </ul>
                   </div>
               </div>
             </div>
           </div>
-          
-        
+          <!-- ROW ENDS -->
+          <div class="row">
+            <div class="col-lg-12 grid-margin">
+              <div class="card performance-cards">
+                <div class="card-body">
+                	<h2 class="card-title">Map</h2>
+                  <div class="row">
+
+                    <div id="googleMap" style="width:100%;height:400px;"></div>
+
+<script>
+function myMap() {
+var mapProp= {
+    center:new google.maps.LatLng(19.0494834,73.0099141),
+    zoom:12,
+   mapTypeId: google.maps.MapTypeId.ROADMAP,
+};
+var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+}
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBiToubfWH_iwhTEf3SRJnpQRDfERsBN8&callback=myMap"></script>
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+      
+        </div>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
         <footer class="footer">
