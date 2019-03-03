@@ -47,6 +47,10 @@ def parse_time(x):
     year=DD.year
     return time, day, month, year
 
+global graph
+graph = tf.get_default_graph()
+model = load_model('my_model.h5', custom_objects={'auc': auc})
+
 @app.route('/analysis')
 def analysis():
     return render_template('/analysis.html')
@@ -64,10 +68,12 @@ def predict():
 	inp_list[longi] = (longi - (-2.2236495408279686)) / (2.138911964416072 - (-2.2236495408279686))
 	inp_list[time],inp_list[day],inp_list[month],inp_list[year] = parse_time(date + '03:34:23')
 
-
-
-
-	return render_template('/ans.html',lat=lat,long=longi)
+	data = {"success": False}
+	with graph.as_default():
+        data["prediction"] = str(model.predict(x)[0][0])
+        data["success"] = True
+    res = flask.jsonify(data)
+	return render_template('/ans.html',res=res)
 
 @app.route('/index')
 def dashboard():
