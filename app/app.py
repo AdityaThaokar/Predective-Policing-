@@ -35,28 +35,39 @@ def plot():
 	plt.savefig('/static/images/new_plot.png')
 	return jsonify(result='/static/images/new_plot.png')
 
+def normalize(data): 
+    data = (data - data.min()) / (data.max() - data.min())
+    return data
 
-
+def parse_time(x):
+    DD=datetime.strptime(str(x),"%Y-%m-%d %H:%M:%S")
+    time=DD.hour
+    day=DD.day
+    month=DD.month
+    year=DD.year
+    return time, day, month, year
 
 @app.route('/analysis')
 def analysis():
     return render_template('/analysis.html')
 
+#actual prediction
 @app.route('/predict',methods=['POST'])
 def predict():
-	category = request.form.get('category')
-	date = request.form.get('date')
-	dist = request.form.get('dist')
-	lat = request.form.get('lat')
-	longi = request.form.get('longi')
-	# load the model from disk
-	# loaded_model = pickle.load(open(filename, 'rb'))
-	#code for testing
-	# .
-	# .
-	# .
-	# .
-	return render_template('/ans.html',lat=lat,longi=longi)
+	season = request.form['season']
+	date = request.form['date']
+	dist = request.form['dist']
+	lat = request.form['lat']
+	longi = request.form['long']
+	inp_list = []
+	inp_list[lat] =  (lat - (-3.535613303754125)) / (2.2451860359300237 - (-3.535613303754125))
+	inp_list[longi] = (longi - (-2.2236495408279686)) / (2.138911964416072 - (-2.2236495408279686))
+	inp_list[time],inp_list[day],inp_list[month],inp_list[year] = parse_time(date + '03:34:23')
+
+
+
+
+	return render_template('/ans.html',lat=lat,long=longi)
 
 @app.route('/index')
 def dashboard():

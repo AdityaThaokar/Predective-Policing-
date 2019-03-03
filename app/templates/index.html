@@ -121,28 +121,23 @@
         <tr>
         <tr>
         <td>
-        Select Category :
+        Select Season :
         </td>
         <td>
-        <select id="category" name="category">
+        <select id="season" name="season">
         <option selected disabled>Choose here</option>
-        <option>Assault</option>
-        <option>Fraud</option>
-        <option>Family Offenses</option>
-        <option>Other Offenses</option>
+        <option>Summer</option>
+        <option>Fall</option>
+        <option>Winter</option>
+        <option>Spring</option>
         </select>
         </td>
-
         <tr>
         <td>
-        Select Day :
+        Select Date and Time :
         </td>
         <td>
-        <select id="day" name="day">
-        <option selected disabled>Choose here</option>
-        {% for i in range(0,6) %}
-        <option value="{{day[i]}}" name="{{day[i]}}">{{day[i]}}</option>
-        {% endfor %}
+        <input type="datetime-local" value="2000-01-01T00:00:00" name="date">
         </td>
 
         <tr>
@@ -162,7 +157,7 @@
         <br>
         </td>
         </table>
-        </center></form>
+        </center>
     </ul>
     </div>
     <div class="col-lg-12 grid-margin">
@@ -176,8 +171,8 @@
     <div id="markerStatus"><i>Click and drag the marker.</i></div>
     <b>Current position:</b>
     <div id="info">
-    Lattitude: <input type="text" id="lat" value="">
-    Longitude: <input type="text" id="long" value="">
+    Lattitude: <input type="text" id="lat" name="lat" value="">
+    Longitude: <input type="text" id="long" name="long" value="">
     </div>
     <b>Closest matching address:</b>
     <div id="address"></div>
@@ -244,7 +239,7 @@
     </div>
     </div>
     </div>
-    <input type="submit" value="Predict">
+    <input type="submit" value="Predict" href="/result"></form>
     </div>
     </div>
     </div>
