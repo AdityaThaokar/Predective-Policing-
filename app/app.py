@@ -16,7 +16,9 @@ def index():
 			for row in reader:
 				district.append(row[8])
 				day.append(row[9])
-		return render_template('/index.html',district=district,day=day)
+		lat = request.args.get('lat')
+		longi = request.args.get('long')
+		return render_template('/index.html',district=district,day=day,lat=lat,longi=longi)
 
 @app.route('/graphs')
 def graphs():
