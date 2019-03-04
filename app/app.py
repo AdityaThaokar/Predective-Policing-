@@ -63,17 +63,17 @@ def predict():
 	dist = request.form['dist']
 	lat = request.form['lat']
 	longi = request.form['long']
-	inp_list = []
-	inp_list[lat] =  (lat - (-3.535613303754125)) / (2.2451860359300237 - (-3.535613303754125))
-	inp_list[longi] = (longi - (-2.2236495408279686)) / (2.138911964416072 - (-2.2236495408279686))
-	inp_list[time],inp_list[day],inp_list[month],inp_list[year] = parse_time(date + '03:34:23')
+	# inp_list = []
+	# inp_list[lat] =  (lat - (-3.535613303754125)) / (2.2451860359300237 - (-3.535613303754125))
+	# inp_list[longi] = (longi - (-2.2236495408279686)) / (2.138911964416072 - (-2.2236495408279686))
+	# inp_list[time],inp_list[day],inp_list[month],inp_list[year] = parse_time(date + '03:34:23')
 
 	# data = {"success": False}
 	# with graph.as_default():
  #        data["prediction"] = str(model.predict(x)[0][0])
  #        data["success"] = True
  #    res = flask.jsonify(data)
-	return render_template('/ans.html',res=res)
+	return render_template('/ans.html',lat=lat,longi=longi)
 
 @app.route('/index')
 def dashboard():
