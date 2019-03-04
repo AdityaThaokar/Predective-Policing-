@@ -47,9 +47,9 @@ def parse_time(x):
     year=DD.year
     return time, day, month, year
 
-global graph
-graph = tf.get_default_graph()
-model = load_model('my_model.h5', custom_objects={'auc': auc})
+# global graph
+# graph = tf.get_default_graph()
+# model = load_model('my_model.h5', custom_objects={'auc': auc})
 
 @app.route('/analysis')
 def analysis():
