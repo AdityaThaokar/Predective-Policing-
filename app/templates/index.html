@@ -120,7 +120,7 @@
         <table>
         <tr>
         <tr>
-        <td>
+      <!--   <td>
         Select Season :
         </td>
         <td>
@@ -131,13 +131,13 @@
         <option>Winter</option>
         <option>Spring</option>
         </select>
-        </td>
+        </td> -->
         <tr>
         <td>
         Select Date and Time :
         </td>
         <td>
-        <input type="datetime-local" value="2000-01-01T00:00:00" name="date">
+        <input type="text" value="2000-01-01 00:00:00" name="date">
         </td>
 
         <tr>
@@ -175,7 +175,7 @@
     Longitude: <input type="text" id="long" name="long" value="">
     </div>
     <b>Closest matching address:</b>
-    <div id="address"></div>
+    <div><input type="text"  id="address" name="address" value=""></div>
     </div>
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyDBiToubfWH_iwhTEf3SRJnpQRDfERsBN8&callback=initialize"></script>
     <script>
@@ -203,7 +203,7 @@
             }
 
             function updateMarkerAddress(str) {
-            document.getElementById('address').innerHTML = str;
+            document.getElementById('address').value = str;
             }
 
             function initialize() {
