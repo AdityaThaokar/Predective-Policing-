@@ -194,8 +194,8 @@ def predict():
 
 	with graph.as_default():
 		res = model.predict(features.tail(1))
-		print(res)
-	return render_template('/ans.html',lat=lat,longi=longi, addr=addr)
+		print("this is result ==> ",res)
+	return render_template('/ans.html',lat=lat,longi=longi, addr=addr, res=res[0])
 
 @app.route('/index')
 def dashboard():
