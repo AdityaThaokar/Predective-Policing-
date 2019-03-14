@@ -60,12 +60,12 @@ def plot():
 	plt.savefig('/static/images/new_plot.png')
 	return jsonify(result='/static/images/new_plot.png')
 
-def normalizeX(data): 
-    data = (data - (-122.511293798596)) / (-120.5 - (-122.511293798596))
-    return data
+# def normalizeX(data): 
+#     data = (data - (-122.511293798596)) / (-120.5 - (-122.511293798596))
+#     return data
 
-def normalizeY(data): 
-    data = (data - (37.7079683645097)) / (90.0 - (37.7079683645097))
+def normalize(data): 
+    data = (data - data.min()) / (data.max() - data.min())
     return data
 
 def parse_time(x):
@@ -173,9 +173,10 @@ def predict():
 
 	actual_dt = pd.read_excel("crime_and_day.xlsx")
 	actual_dt = actual_dt.iloc[:, 0:7]
-
+	print("Printing actual df .... ",actual_dt.head(5))
 	SNF1 = pd.DataFrame({'Dates': date,'Descript':'null', 'PdDistrict': dist,'Resolution': 'null', 'Address': addr,'X': lat,'Y': longi}, index=[0])
 	actual_dt.append(SNF1)
+	print("tail Printing..." , actual_dt.tail(2))
 
 	#normalize
 	scaler = preprocessing.StandardScaler()
@@ -183,14 +184,14 @@ def predict():
 	actual_dt[["X","Y"]] = scaler.transform(actual_dt[["X","Y"]])
 	actual_dt=actual_dt[abs(actual_dt["Y"])<100]
 	actual_dt.index=range(len(actual_dt))
-	actual_dt['X'] = normalizeX(actual_dt.X)
-	actual_dt['Y'] = normalizeY(actual_dt.Y)
-	print("normalize =>"  , actual_dt.tail(1))
+	actual_dt['X'] = normalize(actual_dt['X'])
+	actual_dt['Y'] = normalize(actual_dt['Y'])
+	print("normalize df location=>..."  , actual_dt.tail(2))
 
 
 	features = preprocess_data(actual_dt)
 	features = features.iloc[:,0:84]
-	print("normalize =>"  , features.tail(1))
+	print("normalized features =>"  , features.tail(2))
 
 	with graph.as_default():
 		res = model.predict(features.tail(1))
