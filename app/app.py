@@ -14,13 +14,22 @@ from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import log_loss
 from keras.models import load_model
+import tensorflow as tf
 
 
 app = Flask(__name__,static_url_path='/static')
 app.debug = True
 
-MODEL_PATH = 'C:\\Users\\Aditya - HP\\Desktop\\venv\\Predective-Policing-\\app\\model.h5'
-model = load_model(MODEL_PATH)
+
+def init_tf():
+    global model,graph
+    # load the pre-trained Keras model
+    model = load_model('model.h5')
+    graph = tf.get_default_graph()
+
+# MODEL_PATH = 'model.h5'
+# model = tf.keras.models.load_model(MODEL_PATH)
+# graph = tf.get_default_graph()
 
 
 @app.route('/')
@@ -162,7 +171,7 @@ def predict():
 	lat = request.form['lat']
 	longi = request.form['long']
 
-	actual_dt = pd.read_excel("C:\\Users\\Aditya - HP\\Desktop\\venv\\Predective-Policing-\\app\\crime_and_day.xlsx")
+	actual_dt = pd.read_excel("crime_and_day.xlsx")
 	actual_dt = actual_dt.iloc[:, 0:7]
 
 	SNF1 = pd.DataFrame({'Dates': date,'Descript':'null', 'PdDistrict': dist,'Resolution': 'null', 'Address': addr,'X': lat,'Y': longi}, index=[0])
@@ -183,9 +192,9 @@ def predict():
 	features = features.iloc[:,0:84]
 	print("normalize =>"  , features.tail(1))
 
-
-	res = model.predict(features.tail(1))
-	print(res)
+	with graph.as_default():
+		res = model.predict(features.tail(1))
+		print(res)
 	return render_template('/ans.html',lat=lat,longi=longi, addr=addr)
 
 @app.route('/index')
@@ -200,4 +209,7 @@ def dashboard():
 		return render_template('/index.html',district=district,day=day)
 
 if __name__ == "__main__":
-    app.run()
+	print(("* Loading Keras model and Flask starting server...please wait until server has fully started"))
+	init_tf()
+	app.run(threaded=True)
+
