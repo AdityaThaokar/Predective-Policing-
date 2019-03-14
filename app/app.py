@@ -19,7 +19,7 @@ from keras.models import load_model
 app = Flask(__name__,static_url_path='/static')
 app.debug = True
 
-MODEL_PATH = 'my_model.h5'
+MODEL_PATH = 'C:\\Users\\Aditya - HP\\Desktop\\venv\\Predective-Policing-\\app\\model.h5'
 model = load_model(MODEL_PATH)
 
 
@@ -51,13 +51,13 @@ def plot():
 	plt.savefig('/static/images/new_plot.png')
 	return jsonify(result='/static/images/new_plot.png')
 
-def normalizeY(data): 
-    data = (data - (-122.511293798596)) / (-120.5 - (-122.511293798596))
-    return round(data,8)
-
 def normalizeX(data): 
+    data = (data - (-122.511293798596)) / (-120.5 - (-122.511293798596))
+    return data
+
+def normalizeY(data): 
     data = (data - (37.7079683645097)) / (90.0 - (37.7079683645097))
-    return round(data,8)
+    return data
 
 def parse_time(x):
     DD=datetime.strptime(str(x),"%Y-%m-%d %H:%M:%S")
@@ -116,13 +116,13 @@ def preprocess_data(df):
     
     print ("Creating season features...")
     cleanData["Summer"], cleanData["Fall"], cleanData["Winter"], cleanData["Spring"]=zip(*cleanData["Month"].apply(get_season))
-    # print("Creating Lat/Long feature...")
-    # xy_scaler = preprocessing.StandardScaler()
-    # xy_scaler.fit(cleanData[["X","Y"]])
-    # cleanData[["X","Y"]] = xy_scaler.transform(cleanData[["X","Y"]])
-    # #set outliers to 0
-    # cleanData["X"]=cleanData["X"].apply(lambda x: 0 if abs(x)>5 else x)
-    # cleanData["Y"]=cleanData["Y"].apply(lambda y: 0 if abs(y)>5 else y)
+    print("Creating Lat/Long feature...")
+    xy_scaler = preprocessing.StandardScaler()
+    xy_scaler.fit(cleanData[["X","Y"]])
+    cleanData[["X","Y"]] = xy_scaler.transform(cleanData[["X","Y"]])
+    #set outliers to 0
+    cleanData["X"]=cleanData["X"].apply(lambda x: 0 if abs(x)>5 else x)
+    cleanData["Y"]=cleanData["Y"].apply(lambda y: 0 if abs(y)>5 else y)
     print ("Creating address features...")
     #recoding address as 0: if no interaction , 1: if interaction
     cleanData["Addr"]=cleanData["Address"].apply(lambda x: 1 if "/" in x else 0)
@@ -162,16 +162,29 @@ def predict():
 	lat = request.form['lat']
 	longi = request.form['long']
 
-	SNF1 = pd.DataFrame({'Dates': date, 'PdDistrict': dist,'Address': addr,'X': lat,'Y': longi}, index=[0])
-	SNF1.round(8)
-	#normalize
-	SNF1['X'] = round(normalizeX(float(SNF1['X'])), 8)
-	SNF1['Y'] = round(normalizeY(float(SNF1['Y'])),8)
-	print("normalize =>"  , SNF1)
-	features = preprocess_data(SNF1)
-	print("normalize =>"  , features)
+	actual_dt = pd.read_excel("C:\\Users\\Aditya - HP\\Desktop\\venv\\Predective-Policing-\\app\\crime_and_day.xlsx")
+	actual_dt = actual_dt.iloc[:, 0:7]
 
-	res = model.predict(features)
+	SNF1 = pd.DataFrame({'Dates': date,'Descript':'null', 'PdDistrict': dist,'Resolution': 'null', 'Address': addr,'X': lat,'Y': longi}, index=[0])
+	actual_dt.append(SNF1)
+
+	#normalize
+	scaler = preprocessing.StandardScaler()
+	scaler.fit(actual_dt[["X","Y"]])
+	actual_dt[["X","Y"]] = scaler.transform(actual_dt[["X","Y"]])
+	actual_dt=actual_dt[abs(actual_dt["Y"])<100]
+	actual_dt.index=range(len(actual_dt))
+	actual_dt['X'] = normalizeX(actual_dt.X)
+	actual_dt['Y'] = normalizeY(actual_dt.Y)
+	print("normalize =>"  , actual_dt.tail(1))
+
+
+	features = preprocess_data(actual_dt)
+	features = features.iloc[:,0:84]
+	print("normalize =>"  , features.tail(1))
+
+
+	res = model.predict(features.tail(1))
 	print(res)
 	return render_template('/ans.html',lat=lat,longi=longi, addr=addr)
 
