@@ -194,8 +194,11 @@ def predict():
 
 	with graph.as_default():
 		res = model.predict(features.tail(1))
-		print("this is result ==> ",res)
-	return render_template('/ans.html',lat=lat,longi=longi, addr=addr, res=res[0])
+		res = (res > 0.1)
+		dataset = pd.DataFrame({'Prediction':res[:,0]})
+		dataset = dataset*1
+		print("this is result ==> ",res ,"dataset==>",dataset)
+	return render_template('/ans.html',lat=lat,longi=longi, addr=addr, res=res[0][0]*1, dataset=dataset)
 
 @app.route('/index')
 def dashboard():

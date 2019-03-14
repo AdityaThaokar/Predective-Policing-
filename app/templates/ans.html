@@ -130,15 +130,21 @@ font-family: 'Montserrat', sans-serif; ;
                       		</td>
 
                       		<tr>
-                      		<td>
-                      		Crime :
-                      		</td>
+                             {% if res == 0 %}
+                            <td>
+                          Assualt Occurs : False
+                          </td>
+                        {% else %}
+                              <td>
+                         Assualt Occurs : True
+                          </td>
+                        {% endif %}
                       		<td>
                       		
                       		</td>
                       		<tr>
                             <td>
-                          Probabilty : {{res}}
+                          Probabilty : 
                           </td>
                           <td>
                           
